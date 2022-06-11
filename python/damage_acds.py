@@ -1,10 +1,9 @@
-# Additive Common Divisor System (ACDS) for damage bonuse and reduction.
+# Additive Common Divisor System (ACDS) for damage bonus and reduction.
 #
 # There are two ACDS contexts:
 # - Damage Bonus (DB): used for dealing damage
 # - Damage Reduction (DR): used for reducing damaage
 from typing import List
-
 
 def damage_bonus(damage: int, dr_bytes: List[int]):
     """Returns damage after damage bonus. (+) raises damage, (-) lowers it."""
@@ -93,7 +92,7 @@ def dr_bytes_from_nominal(nominal: int) -> List[int]:
 
 def test_acds_damage_bonus():
     """Ensure proper creation and damage bonus of DB bytes (damage = 1000)."""    
-    nominal_list = [n for n in range(-10, 10 + 1)]
+    nominal_list = [n for n in range(10, -11, -1)]
     db_byte_list = [
         [0, 1, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 1],
@@ -132,7 +131,7 @@ def test_acds_damage_bonus():
 
 def test_acds_damage_reduction():
     """Ensure proper creation and damage reduction of DR bytes (damage = 1000)."""    
-    nominal_list = [n for n in range(-10, 10 + 1)]
+    nominal_list = [n for n in range(-10, 11)]
     dr_byte_list = [
         [0, -1, 0, 0, 0, 0, 0, -1],
         [-1, 0, 0, 0, 0, 0, 0, -1],
@@ -163,6 +162,24 @@ def test_acds_damage_reduction():
     for nominal, expected_bytes in zip(nominal_list, dr_byte_list):
         actual = dr_bytes_from_nominal(nominal)
         assert actual == expected_bytes
+
+    for dr_bytes, expected_damage in zip(dr_byte_list, damages):
+        actual = damage_reduction(1000, dr_bytes)
+        assert actual == expected_damage        
+
+
+def test_acds_compouned_damage_reduction():
+    """Test DR for compound values - more than one non-zero index (damage = 1000)."""    
+    dr_byte_list = [
+        [2, 0, 0, 0, 0, 0, 0, 0],   # 766 (23.4% DR)
+        [0, 0, 0, 0, 0, -3, 1, 0],  # 670 (33.0% DR)
+        [1, 1, 0, 0, 0, 0, 0, 0],   # 657 (34.3% DR)
+        [0, 2, 0, 0, 0, 0, 0, 0],   # 563 (43.7% DR)
+        [0, 0, 2, 0, 0, 0, 0, 0],   # 391 (60.9% DR)
+        [0, 1, 0, 1, 0, 0, 0, 0],   # 375 (62.5% DR)
+        [0, 0, 0, 0, -2, 0, 1, 0],  # 330 (67.0% DR)
+    ]
+    damages = [766, 670, 657, 563, 391, 375, 330]
 
     for dr_bytes, expected_damage in zip(dr_byte_list, damages):
         actual = damage_reduction(1000, dr_bytes)

@@ -23,11 +23,11 @@ Use cases include:
 
 ### Structure
 
-A damage reduction bytes structure is an array of 8 bytes:
+A damage bonus/reduction bytes structure is an array of 8 bytes:
 
 ```rust
-//                       1/8      1/2      8/8  
-let dr_bytes: [i8 ; 8] = [0, 1, 0, 0, 0, 0, 0];
+//                      1/8      1/2      8/8  
+let dr_bytes: [i8; 8] = [0, 1, 0, 0, 0, 0, 0];
 ```
 
 Each increasing index of `dr_bytes` represents two things:
@@ -46,7 +46,7 @@ Pros:
 - Reversible: combining byte arrays is reversible with no loss of data (unlike `float`s)
 - Fixed size:  multiple damage modifiers can be represented in the same structure
 - Compact: only `8` bytes, the size of a 64-bit `float` or `int`
-- Flexible: can use multiple non-zero indexes to create DB/DR values other than multiples of `1/8`. For example, `[0, 0, 0, 0, 0, -3, 1, 0]` is a DB/DR of `33.3% (1/3)`.
+- Flexible: can use multiple non-zero indexes to create DB/DR values other than multiples of `1/8`. For example, `[0, 0, 0, 0, 0, -3, 1, 0]` is a DB/DR of `33.0% (~1/3)`.
 
 Cons:
 - Slower: takes longer to calculate damage compared to a single list of floating point or fractional damage modifiers (about *2.5-5.0x* slower - see Python benchmarks)
