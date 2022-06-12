@@ -1,7 +1,7 @@
 # ACDS Damage Calculations (Python)
 System for storing and calculating damage modification using the *Additive Common Divisor System* (ACDS), in Python.
 
-For more details, see the parent README.
+For more details, see the parent `README.md`.
 
 ## Testing
 
@@ -11,18 +11,18 @@ Ensure `pytest` is installed, then enter the following:
 ## Benchmarks
 
 The benchmark compares the default ACDS implementation against two alternatives:
-1. List: uses a list of `(numerator, denominator)` pairs of unbounded size (not a fixed 8 bytes like the default implementation).
-2. Early Exit: keeps track of the number of `non_zero` indexes, and exits once all such indexes have been checked.
+1. `List`: uses a list of `(numerator, denominator)` pairs of unbounded size (not a fixed 8 bytes like the default implementation).
+2. `Early Exit`: keeps track of the number of `non_zero` indexes, and exits once all such indexes have been checked.
 
 Four scenarios are tested:
-1. Empty: no damage modifiers.
-2. Light:  half of entries are empty, half have one damage modifier.
-3. Medium:  half of entries have one damage modifier, half have two.
-4. Heavy: all entries have 5 damage modifiers.
-
-### Results
+1. `Empty`: no damage modifiers.
+2. `Light`:  half of entries are empty, half have one damage modifier.
+3. `Medium`:  half of entries have one damage modifier, half have two.
+4. `Heavy`: all entries have 5 damage modifiers.
 
 See `benchmarks.py`.
+
+### Results
 
 Empty:
 ```
@@ -49,6 +49,6 @@ Early Exit: 14.29 seconds
 List:        3.54 seconds
 ```
 
-The **list method** is the fastest in all cases, coming at the cost of space (unbounded).
+The `list` method is the fastest in all cases, coming at the cost of space (unbounded).
 
-Early exit provides a slight speed edge over the default test case, but is about even (or slightly worse) in other cases.  It also requires an extra value (`non_zero`) to be tracked at all times, adding complexity.
+`Early exit` provides a slight speed edge over the default test case, but is about even (or slightly worse) in other cases.  It also requires an extra value (`non_zero`) to be tracked at all times, adding complexity.

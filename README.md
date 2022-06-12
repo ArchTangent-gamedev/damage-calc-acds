@@ -89,14 +89,46 @@ Key:
 
 Below examples are used in the context of damage *reduction* (DR).
 
-Example 1: `damage = 100`, `DR_nominal = 10`
+### Example 1
+`damage = 100`, `DR_nominal = 10`
 - `DR% = 150%` which is `> 100%`
 - no damage (target is immune)
 
-Example 2: `damage = 100`, `DR_nominal = 4`
+### Example 2
+`damage = 100`, `DR_nominal = 4`
 - `DR% = 50%`
 - `damage` reduced to `50`
 
-Example 3: `damage = 100`, `DR_nominal = -12`
+### Example 3
+`damage = 100`, `DR_nominal = -12`
 - `DR% = -200`
 - `damage` increased to `300` (triple damage)
+
+### Example 4
+
+Compound `dr_bytes` (more than one non-zero index)
+```python
+damage = 1000   # incoming
+dr_bytes = [0, 0, 0, 0, -2, 0, 1, 0]
+#          1/8   3/8    5/8   7/8
+```
+
+1st non-zero index at `dr_bytes[4]: -2`.  Add damage since value is negative
+```python
+damage += 1000 * 5 // 8
+damage = 1625
+```
+
+Perform twice since value at index `[4]` was `-2`. Add damage since value is negative.
+```python
+damage += 1625 * 5 // 8
+damage = 2640
+```
+
+Final non-zero index at `dr_bytes[7]: 1`
+```python
+damage -= 2640 * 7 // 8
+damage = 330
+damage reduction: 670
+damage reduction_pct: 67.0
+```
