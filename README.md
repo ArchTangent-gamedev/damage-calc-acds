@@ -42,8 +42,8 @@ Pros:
 - Double-edged: easy to model damage resistance *and* bonuses
 - Removable immunity: allows for *damage immunity* to be applied and later removed by modifiying the 8th bit (at index `[7]`)
 - Combinable: multiple byte arrays can be combined, allowing for modifications from armor, status effects, item mods, and more
-- Levels of DR are more meaningful:  with only 8 base levels the minimum damage modification is `1/8 (12.5%`)
-- Reversible: combining byte arrays is reversible with no loss of data (unlike `float`s)
+- Levels of DR are more meaningful:  with only 8 base levels the minimum damage modification is `1/8 (12.5%)`)
+- Reversible: combining byte arrays is reversible with no loss of data (unlike `float`)
 - Fixed size:  multiple damage modifiers can be represented in the same structure
 - Compact: only `8` bytes, the size of a 64-bit `float` or `int`
 - Flexible: can use multiple non-zero indexes to create DB/DR values other than multiples of `1/8`. For example, `[0, 0, 0, 0, 0, -3, 1, 0]` is a DB/DR of `33.0% (~1/3)`.
@@ -106,26 +106,26 @@ Below examples are used in the context of damage *reduction* (DR).
 
 ### Example 4
 
-Compound `dr_bytes` (more than one non-zero index)
+Compound `dr_bytes` (more than one non-zero index):
 ```python
 damage = 1000   # incoming
 dr_bytes = [0, 0, 0, 0, -2, 0, 1, 0]
 #          1/8   3/8    5/8   7/8
 ```
 
-1st non-zero index at `dr_bytes[4]: -2`.  Add damage since value is negative
+1st non-zero index at `dr_bytes[4]: -2`.  Add damage since value is negative:
 ```python
 damage += 1000 * 5 // 8
 damage = 1625
 ```
 
-Perform twice since value at index `[4]` was `-2`. Add damage since value is negative.
+Perform twice since value at index `[4]` was `-2`:
 ```python
 damage += 1625 * 5 // 8
 damage = 2640
 ```
 
-Final non-zero index at `dr_bytes[7]: 1`
+Final non-zero index at `dr_bytes[7]: 1`:
 ```python
 damage -= 2640 * 7 // 8
 damage = 330
