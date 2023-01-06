@@ -92,7 +92,7 @@ Below examples are used in the context of damage *reduction* (DR).
 ### Example 1
 `damage = 100`, `DR_nominal = 10`
 - `DR% = 150%` which is `> 100%`
-- no damage (target is immune)
+- `damage` is `0` (target is immune)
 
 ### Example 2
 `damage = 100`, `DR_nominal = 4`
